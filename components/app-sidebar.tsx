@@ -5,10 +5,11 @@ import * as React from "react";
 import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
 import { FaY } from "react-icons/fa6";
 import { BiChat } from "react-icons/bi";
-import { MdAmpStories } from "react-icons/md";
+import { MdAmpStories, MdChat, MdOutlineVideoCameraBack } from "react-icons/md";
 import { RiGroupLine } from "react-icons/ri";
-import { PhoneCall, Settings2, UserCircle } from "lucide-react";
+import { PhoneCall, Settings2, User2Icon, UserCircle } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "@/app/lib/auth_client";
 
 // This is sample data.
 const data = {
@@ -143,6 +144,8 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const { data, error } = useSession();
+
     return (
         <Sidebar {...props}>
             <SidebarHeader className="flex flex-col items-center">
@@ -154,29 +157,36 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarContent className="flex flex-col ">
                 <div className="flex flex-col gap-1">
                     <SideBarIcon routeName="chat">
-                        <BiChat size={30} />
+                        <MdChat size={25} />
                         <h1>chat</h1>
                     </SideBarIcon>
                     <SideBarIcon routeName="stories">
-                        <MdAmpStories size={30} />
+                        <MdOutlineVideoCameraBack size={25} />
                         <h1>stories</h1>
                     </SideBarIcon>
                     <SideBarIcon routeName="groupe">
-                        <RiGroupLine size={30} />
+                        <RiGroupLine size={25} />
                         <h1>groupe</h1>
                     </SideBarIcon>
                     <SideBarIcon routeName="call">
-                        <PhoneCall size={30} />
+                        <PhoneCall size={25} />
                         <h1>call</h1>
                     </SideBarIcon>
                 </div>
                 <div className="flex mt-auto flex-col gap-1 mb-3">
-                    <SideBarIcon routeName="profile">
-                        <UserCircle size={30} />
-                        <h1>profile</h1>
-                    </SideBarIcon>{" "}
+                    {data === null ? (
+                        <SideBarIcon routeName="login">
+                            <User2Icon size={25} />
+                            <h1>Settings</h1>
+                        </SideBarIcon>
+                    ) : (
+                        <SideBarIcon routeName="profile">
+                            <User2Icon size={25} />
+                            <h1>Settings</h1>
+                        </SideBarIcon>
+                    )}{" "}
                     <SideBarIcon routeName="settings">
-                        <Settings2 size={30} />
+                        <Settings2 size={25} />
                         <h1>Settings</h1>
                     </SideBarIcon>
                 </div>
@@ -189,7 +199,7 @@ export function SideBarIcon({ children, routeName }: { children: React.ReactNode
     return (
         <Link
             href={`/${routeName}`}
-            className="flex flex-row gap-3 mx-auto focus:border-2 focus:bg-secondary/35 focus:backdrop-blur-2xl border-primary/45 rounded-xl w-[90%] p-2 [&>h1]:font-bold [&>h1]:text-xl">
+            className="flex flex-row gap-3 mx-auto focus:border-2 focus:bg-secondary/35 focus:backdrop-blur-2xl border-primary/45 rounded-xl w-[90%] p-2  [&>h1]:text-md">
             {children}
         </Link>
     );

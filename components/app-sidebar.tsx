@@ -4,18 +4,23 @@ import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/component
 import { FaY } from "react-icons/fa6";
 import { MdChat, MdOutlineVideoCameraBack } from "react-icons/md";
 import { RiGroupLine } from "react-icons/ri";
-import { PhoneCall, Settings2, User2Icon } from "lucide-react";
+import { PhoneCall, User2Icon } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "@/app/lib/auth_client";
-import { useEffect, useState } from "react";
+import { AvatarWithBadge } from "@/app/chat/components/avatarWithBadge";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const { data } = useSession();
-    const [name, setName] = useState("");
-    useEffect(() => {
-        const fullName = data?.user.name.split(" ") as string[];
-        console.log(fullName);
-    }, [data]);
+
+    function profileNameAb(name: string) {
+        const arrayName = name.split(" ");
+        const firstPart = arrayName[0][0];
+        const secondPart = arrayName[1][0] || "";
+        return ` ${firstPart.toUpperCase()}${secondPart.toUpperCase()}`;
+    }
 
     return (
         <Sidebar {...props}>
@@ -52,14 +57,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         </SideBarIcon>
                     ) : (
                         <SideBarIcon routeName="profile">
-                            <User2Icon size={25} />
-                            <h1>{data.user.name}</h1>
+                            <AvatarWithBadge image={`${data.user.image}`} CN={`${profileNameAb(data.user.name)}`} />
+                            <h1 className="mt-2">profile</h1>
                         </SideBarIcon>
                     )}{" "}
-                    <SideBarIcon routeName="settings">
-                        <Settings2 size={25} />
-                        <h1>Settings</h1>
-                    </SideBarIcon>
                 </div>
             </SidebarContent>
             <SidebarRail />
@@ -67,10 +68,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     );
 }
 export function SideBarIcon({ children, routeName }: { children: React.ReactNode; routeName: string }) {
+    const pathname = usePathname();
     return (
         <Link
             href={`/${routeName}`}
-            className="flex flex-row gap-3 mx-auto focus:border-2 focus:bg-secondary/35 focus:backdrop-blur-2xl border-primary/45 rounded-xl w-[90%] p-2  [&>h1]:text-md">
+            className={` flex flex-row gap-3 mx-auto  border-primary/45 ${pathname === `/${routeName}` ? "border-2 bg-secondary/35 backdrop-blur-2xl" : ""} rounded-xl w-[90%] p-2  [&>h1]:text-md `}>
             {children}
         </Link>
     );

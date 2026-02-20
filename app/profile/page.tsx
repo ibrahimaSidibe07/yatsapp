@@ -1,4 +1,5 @@
 "use client";
+import { EmailTemplate } from "@/components/email_template";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { ArrowBigLeftDash } from "lucide-react";

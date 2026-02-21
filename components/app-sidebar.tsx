@@ -4,16 +4,16 @@ import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/component
 import { FaY } from "react-icons/fa6";
 import { MdChat, MdOutlineVideoCameraBack } from "react-icons/md";
 import { RiGroupLine } from "react-icons/ri";
-import { PhoneCall, User2Icon } from "lucide-react";
+import { LogOut, PhoneCall, User2Icon } from "lucide-react";
 import Link from "next/link";
-import { useSession } from "@/app/lib/auth_client";
+import { authClient, useSession } from "@/app/lib/auth_client";
 import { AvatarWithBadge } from "@/app/chat/components/avatarWithBadge";
-import { usePathname } from "next/navigation";
-import { useEffect } from "react";
-import { cn } from "@/lib/utils";
+import { usePathname, useRouter } from "next/navigation";
+import { Button } from "./ui/button";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const { data } = useSession();
+    const router = useRouter();
 
     function profileNameAb(name: string) {
         const arrayName = name.split(" ");
@@ -67,12 +67,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </Sidebar>
     );
 }
-export function SideBarIcon({ children, routeName }: { children: React.ReactNode; routeName: string }) {
+export function SideBarIcon({
+    children,
+    routeName,
+    className,
+}: {
+    children: React.ReactNode;
+    routeName: string;
+    className?: string;
+}) {
     const pathname = usePathname();
     return (
         <Link
             href={`/${routeName}`}
-            className={` flex flex-row gap-3 mx-auto  border-primary/45 ${pathname === `/${routeName}` ? "border-2 bg-secondary/35 backdrop-blur-2xl" : ""} rounded-xl w-[90%] p-2  [&>h1]:text-md `}>
+            className={` flex flex-row gap-3 mx-auto  border-primary/45 ${className}  ${pathname === `/${routeName}` ? "border-2 bg-secondary/35 backdrop-blur-2xl" : ""} rounded-xl w-[90%] p-2  [&>h1]:text-md `}>
             {children}
         </Link>
     );

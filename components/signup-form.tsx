@@ -46,6 +46,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
                         password: "",
                         Confirmpasswprd: "",
                     });
+                    router.refresh();
                     router.push("/chat");
                 },
                 onError: ctx => {
@@ -85,6 +86,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
                         Confirmpasswprd: "",
                     });
                     router.push("/chat");
+                    router.refresh();
                 },
                 onError: ctx => {
                     SetLoding(false);

@@ -7,11 +7,24 @@ import { ArrowLeft, Users, Settings, Lock, Edit, ImageIcon, LogOut } from "lucid
 import { useRouter } from "next/navigation";
 import Option from "./components/option";
 import { authClient } from "../lib/auth_client";
+import { useState } from "react";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function Profile() {
+    const [loading, SetLoding] = useState<boolean>(false);
     const router = useRouter();
     async function logOut() {
-        await authClient.signOut();
+        await authClient.signOut({
+            fetchOptions: {
+                onSuccess: () => {
+                    router.push("/login");
+                    window.location.reload();
+                },
+                onRequest: () => {
+                    SetLoding(true);
+                },
+            },
+        });
         router.replace("/chat");
     }
     return (
@@ -32,7 +45,7 @@ export default function Profile() {
 
                     <div>
                         <h2 className="text-xl font-semibold">Ibrahima Sidibé</h2>
-                        <p className="text-sm text-muted-foreground">"Toujours coder, jamais abandonner 🚀"</p>
+                        <p className="text-sm text-muted-foreground">Toujours coder, jamais abandonner 🚀 </p>
                     </div>
 
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -64,7 +77,14 @@ export default function Profile() {
 
                     <Option icon={<Settings size={18} />} title="Paramètres" description="Préférences du compte" />
                     <Button variant={"destructive"} onClick={logOut}>
-                        <LogOut /> logout
+                        {loading ? (
+                            <Spinner />
+                        ) : (
+                            <div className="flex flex-row gap-3">
+                                <LogOut />
+                                logout
+                            </div>
+                        )}
                     </Button>
                 </Card>
             </div>

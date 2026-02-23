@@ -38,6 +38,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                     SetLoding(false);
 
                     router.push("/chat");
+                    router.refresh();
                 },
                 onError: ctx => {
                     SetLoding(false);
@@ -68,6 +69,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                     });
                     SetLoding(false);
                     router.push("/chat");
+                    router.refresh();
                 },
                 onError: ctx => {
                     SetLoding(false);

@@ -1,7 +1,7 @@
 import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 interface avatarType {
     image: string;
-    CN: string;
+    CN: string | undefined;
 }
 export function AvatarWithBadge({ image, CN }: avatarType) {
     return (

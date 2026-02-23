@@ -4,24 +4,25 @@ import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/component
 import { FaY } from "react-icons/fa6";
 import { MdChat, MdOutlineVideoCameraBack } from "react-icons/md";
 import { RiGroupLine } from "react-icons/ri";
-import { LogOut, PhoneCall, User2Icon } from "lucide-react";
+import { PhoneCall, User2Icon, UsersIcon } from "lucide-react";
 import Link from "next/link";
-import { authClient, useSession } from "@/app/lib/auth_client";
 import { AvatarWithBadge } from "@/app/chat/components/avatarWithBadge";
-import { usePathname, useRouter } from "next/navigation";
-import { Button } from "./ui/button";
+import { usePathname } from "next/navigation";
+import { profileNameAb } from "@/functions/string_function";
+interface userType {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    email: string;
+    emailVerified: boolean;
+    name: string;
+    image?: string | null | undefined;
+}
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+    user?: userType | undefined | null;
+}
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-    const { data } = useSession();
-    const router = useRouter();
-
-    function profileNameAb(name: string) {
-        const arrayName = name.split(" ");
-        const firstPart = arrayName[0][0];
-        const secondPart = arrayName[1][0] || "";
-        return ` ${firstPart.toUpperCase()}${secondPart.toUpperCase()}`;
-    }
-
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
     return (
         <Sidebar {...props}>
             <SidebarHeader className="flex flex-col items-center">
@@ -40,6 +41,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         <MdOutlineVideoCameraBack size={25} />
                         <h1>stories</h1>
                     </SideBarIcon>
+                    <SideBarIcon routeName="all_mumber">
+                        <UsersIcon size={25} />
+                        <h1>all mumber</h1>
+                    </SideBarIcon>
                     <SideBarIcon routeName="groupe">
                         <RiGroupLine size={25} />
                         <h1>groupe</h1>
@@ -50,14 +55,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     </SideBarIcon>
                 </div>
                 <div className="flex mt-auto flex-col gap-1 mb-3">
-                    {data === null ? (
+                    {!user ? (
                         <SideBarIcon routeName="login">
                             <User2Icon size={25} />
                             <h1>se connecter</h1>
                         </SideBarIcon>
                     ) : (
                         <SideBarIcon routeName="profile">
-                            <AvatarWithBadge image={`${data.user.image}`} CN={`${profileNameAb(data.user.name)}`} />
+                            <AvatarWithBadge image={`${user?.image}`} CN={`${profileNameAb(user?.name as string)}`} />
                             <h1 className="mt-2">profile</h1>
                         </SideBarIcon>
                     )}{" "}

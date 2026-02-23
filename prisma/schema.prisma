@@ -14,17 +14,20 @@ datasource db {
 }
 
 model User {
-  id            String    @id
+  id            String   @id @default(cuid())
   name          String
-  email         String
-  emailVerified Boolean   @default(false)
+  email         String   @unique
+  emailVerified Boolean  @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  @@unique([email])
+  sentMessages     Message[] @relation("sentMessages")
+  receivedMessages Message[] @relation("receivedMessages")
+
+  sessions Session[]
+  accounts Account[]
+
   @@map("user")
 }
 
@@ -74,4 +77,21 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Message {
+  id      String @id @default(uuid())
+  content String
+
+  senderId   String
+  receiverId String
+
+  sender   User @relation("sentMessages", fields: [senderId], references: [id])
+  receiver User @relation("receivedMessages", fields: [receiverId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@map("message")
 }

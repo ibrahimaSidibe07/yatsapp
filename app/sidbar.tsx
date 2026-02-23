@@ -1,12 +1,18 @@
 import { AppSidebar } from "@/components/app-sidebar";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { headers } from "next/headers";
+import { auth } from "./lib/auth";
 
-export default function SideBar({ children }: { children: React.ReactNode }) {
-  return (
-    <SidebarProvider>
-      <AppSidebar className="" />
-      <SidebarInset>{children}</SidebarInset>
-    </SidebarProvider>
-  );
+export default async function SideBar({ children }: { children: React.ReactNode }) {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+    console.log(session?.user);
+    return (
+        <SidebarProvider>
+            <AppSidebar user={session?.user} />
+            <SidebarInset>{children}</SidebarInset>
+        </SidebarProvider>
+    );
 }

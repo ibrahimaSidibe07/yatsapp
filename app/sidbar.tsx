@@ -8,7 +8,7 @@ export default async function SideBar({ children }: { children: React.ReactNode 
     const session = await auth.api.getSession({
         headers: await headers(),
     });
-    console.log(session?.user);
+
     return (
         <SidebarProvider>
             <AppSidebar user={session?.user} />

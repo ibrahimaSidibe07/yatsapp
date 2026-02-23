@@ -1,14 +1,6 @@
+import { userInterface } from "@/interface_and_type/user";
 import { InputButtonGroup } from "./components/searchInput";
 import UserIcon from "./components/userIcon";
-interface userInterface {
-    name: string;
-    id: string;
-    email: string;
-    emailVerified: boolean;
-    image: string | null;
-    createdAt: Date;
-    updatedAt: Date;
-}
 
 export default function ListUsers({ user }: { user: userInterface[] }) {
     return (

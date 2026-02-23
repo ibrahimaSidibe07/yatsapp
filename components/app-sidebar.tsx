@@ -41,9 +41,9 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
                         <MdOutlineVideoCameraBack size={25} />
                         <h1>stories</h1>
                     </SideBarIcon>
-                    <SideBarIcon routeName="all_mumber">
+                    <SideBarIcon routeName="all_member">
                         <UsersIcon size={25} />
-                        <h1>all mumber</h1>
+                        <h1>all member</h1>
                     </SideBarIcon>
                     <SideBarIcon routeName="groupe">
                         <RiGroupLine size={25} />

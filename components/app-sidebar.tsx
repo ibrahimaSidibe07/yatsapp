@@ -1,6 +1,6 @@
 "use client";
 
-import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarHeader } from "@/components/ui/sidebar";
 import { FaY } from "react-icons/fa6";
 import { MdChat, MdOutlineVideoCameraBack } from "react-icons/md";
 import { RiGroupLine } from "react-icons/ri";
@@ -9,6 +9,8 @@ import Link from "next/link";
 import { AvatarWithBadge } from "@/app/chat/components/avatarWithBadge";
 import { usePathname } from "next/navigation";
 import { profileNameAb } from "@/functions/string_function";
+import { cn } from "@/lib/utils";
+
 interface userType {
     id: string;
     createdAt: Date;
@@ -24,54 +26,58 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 
 export function AppSidebar({ user, ...props }: AppSidebarProps) {
     return (
-        <Sidebar {...props}>
-            <SidebarHeader className="flex flex-col items-center">
-                <div className="border-2 border-primary/50 rounded-2xl w-20 p-3 text-center bg-secondary/35 backdrop-blur-2xl">
-                    <FaY />
-                    atsapp
+        <Sidebar collapsible="icon" className="border-r bg-sidebar/50" {...props}>
+            <SidebarHeader className="flex items-center justify-center h-16 border-b shrink-0">
+                <div className="flex items-center justify-center size-10 rounded-xl bg-primary text-primary-foreground shadow-lg shrink-0">
+                    <FaY className="size-5" />
                 </div>
             </SidebarHeader>
-            <SidebarContent className="flex flex-col ">
-                <div className="flex flex-col gap-1">
+            <SidebarContent className="py-6 px-2 overflow-x-hidden scrollbar-hide">
+                <div className="flex flex-col gap-2">
                     <SideBarIcon routeName="chat">
-                        <MdChat size={25} />
-                        <h1>chat</h1>
+                        <MdChat size={24} className="shrink-0" />
+                        <span className="group-data-[collapsible=icon]:hidden font-medium">Messages</span>
                     </SideBarIcon>
                     <SideBarIcon routeName="stories">
-                        <MdOutlineVideoCameraBack size={25} />
-                        <h1>stories</h1>
+                        <MdOutlineVideoCameraBack size={24} className="shrink-0" />
+                        <span className="group-data-[collapsible=icon]:hidden font-medium">Stories</span>
                     </SideBarIcon>
                     <SideBarIcon routeName="all_member">
-                        <UsersIcon size={25} />
-                        <h1>all member</h1>
+                        <UsersIcon size={24} className="shrink-0" />
+                        <span className="group-data-[collapsible=icon]:hidden font-medium">Membres</span>
                     </SideBarIcon>
                     <SideBarIcon routeName="groupe">
-                        <RiGroupLine size={25} />
-                        <h1>groupe</h1>
+                        <RiGroupLine size={24} className="shrink-0" />
+                        <span className="group-data-[collapsible=icon]:hidden font-medium">Groupes</span>
                     </SideBarIcon>
                     <SideBarIcon routeName="call">
-                        <PhoneCall size={25} />
-                        <h1>call</h1>
+                        <PhoneCall size={24} className="shrink-0" />
+                        <span className="group-data-[collapsible=icon]:hidden font-medium">Appels</span>
                     </SideBarIcon>
                 </div>
-                <div className="flex mt-auto flex-col gap-1 mb-3">
+
+                <div className="flex mt-auto flex-col gap-2 pt-6 border-t border-border/50">
                     {!user ? (
                         <SideBarIcon routeName="login">
-                            <User2Icon size={25} />
-                            <h1>se connecter</h1>
+                            <User2Icon size={24} className="shrink-0" />
+                            <span className="group-data-[collapsible=icon]:hidden font-medium">Se connecter</span>
                         </SideBarIcon>
                     ) : (
                         <SideBarIcon routeName="profile">
-                            <AvatarWithBadge image={`${user?.image}`} CN={`${profileNameAb(user?.name as string)}`} />
-                            <h1 className="mt-2">profile</h1>
+                            <AvatarWithBadge 
+                                CN={profileNameAb(user.name)} 
+                                image={user.image as string} 
+                                className="size-6 shrink-0" 
+                            />
+                            <span className="group-data-[collapsible=icon]:hidden font-medium truncate ml-1">{user.name}</span>
                         </SideBarIcon>
-                    )}{" "}
+                    )}
                 </div>
             </SidebarContent>
-            <SidebarRail />
         </Sidebar>
     );
 }
+
 export function SideBarIcon({
     children,
     routeName,
@@ -82,10 +88,19 @@ export function SideBarIcon({
     className?: string;
 }) {
     const pathname = usePathname();
+    const isActive = pathname === `/${routeName}`;
+
     return (
         <Link
             href={`/${routeName}`}
-            className={` flex flex-row gap-3 mx-auto  border-primary/45 ${className}  ${pathname === `/${routeName}` ? "border-2 bg-secondary/35 backdrop-blur-2xl" : ""} rounded-xl w-[90%] p-2  [&>h1]:text-md `}>
+            className={cn(
+                "flex items-center gap-4 p-3 rounded-xl transition-all duration-200 group-data-[collapsible=icon]:justify-center",
+                isActive 
+                    ? "bg-primary text-primary-foreground shadow-md" 
+                    : "hover:bg-secondary/80 text-muted-foreground hover:text-foreground",
+                className
+            )}
+        >
             {children}
         </Link>
     );

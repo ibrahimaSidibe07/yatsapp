@@ -27,6 +27,10 @@ model User {
 
   sessions Session[]
   accounts Account[]
+  friend1  Friend[]        @relation("friend1")
+  friend2  Friend[]        @relation("friend2")
+  fromUser FriendRequest[] @relation("fromUser")
+  toUser   FriendRequest[] @relation("toUser")
 
   @@map("user")
 }
@@ -94,4 +98,27 @@ model Message {
   @@index([senderId])
   @@index([receiverId])
   @@map("message")
+}
+
+model Friend {
+  id      String @id @default(uuid())
+  user1id String
+  user2id String
+  user1   User   @relation("friend1", fields: [user1id], references: [id])
+  user2   User   @relation("friend2", fields: [user2id], references: [id])
+
+  @@unique([user1id, user2id])
+  @@index([user1id])
+  @@index([user2id])
+  @@map("friend")
+}
+
+model FriendRequest {
+  id        String @id @default(uuid())
+  fromUser  String
+  toUser    String
+  fromUsers User   @relation("fromUser", fields: [fromUser], references: [id])
+  toUsers   User   @relation("toUser", fields: [toUser], references: [id])
+
+  @@unique([fromUser, toUser])
 }

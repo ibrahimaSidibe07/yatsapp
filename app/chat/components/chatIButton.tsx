@@ -7,30 +7,24 @@ import { AudioLinesIcon, PlusIcon, Send } from "lucide-react";
 
 export function ChatButton() {
     return (
-        <ButtonGroup className="">
-            <ButtonGroup>
-                <Button variant="outline" size="icon">
-                    <PlusIcon />
-                </Button>
-            </ButtonGroup>
-            <ButtonGroup>
-                <InputGroup className="w-150">
-                    <Textarea />
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <InputGroupAddon align="inline-end">
-                                <AudioLinesIcon />
-                            </InputGroupAddon>
-                        </TooltipTrigger>
-                        <TooltipContent>Voice Mode</TooltipContent>
-                    </Tooltip>
-                </InputGroup>
-            </ButtonGroup>
-            <ButtonGroup>
-                <Button variant="outline" size="icon">
-                    <Send />
-                </Button>
-            </ButtonGroup>
-        </ButtonGroup>
+        <div className="flex items-end gap-2 w-full">
+            <Button variant="outline" size="icon" className="shrink-0 mb-1">
+                <PlusIcon className="size-5" />
+            </Button>
+            <InputGroup className="flex-1 min-w-0 bg-secondary/20">
+                <Textarea className="min-h-[40px] max-h-[120px] py-2 resize-none" placeholder="Type a message..." />
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <InputGroupAddon align="inline-end">
+                            <AudioLinesIcon className="size-5 cursor-pointer text-muted-foreground hover:text-primary transition-colors" />
+                        </InputGroupAddon>
+                    </TooltipTrigger>
+                    <TooltipContent>Voice Mode</TooltipContent>
+                </Tooltip>
+            </InputGroup>
+            <Button variant="outline" size="icon" className="shrink-0 mb-1">
+                <Send className="size-5" />
+            </Button>
+        </div>
     );
 }

@@ -6,6 +6,7 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { userInterface } from "@/interface_and_type/user";
 import { useState, useMemo } from "react";
+import { AddFriendDialog } from "./addFriendDialog";
 
 export default function ListAllUsers({ users }: { users: userInterface[] }) {
     const [search, setSearch] = useState<string>("");
@@ -43,11 +44,14 @@ export default function ListAllUsers({ users }: { users: userInterface[] }) {
                                 <AvatarWithBadge image={user.image as string} CN={profileNameAb(user.name)} />
                                 <div>
                                     <h3 className="font-bold text-primary leading-tight">{user.name}</h3>
-                                    <p className="text-[10px] text-muted-foreground uppercase mt-1">
-                                        connecté il y a 12 H
-                                    </p>
                                 </div>
                             </div>
+                            <AddFriendDialog
+                                id={user.id as string}
+                                email={user.email as string}
+                                name={user.name as string}
+                                image={user.image as string}
+                            />
                         </div>
                     ))
                 ) : (

@@ -3,30 +3,31 @@ import UserIcon from "./components/userIcon";
 import ChatText from "./components/chatText";
 import { ChatButton } from "./components/chatIButton";
 
-export default function Page() {
+export default async function Page() {
     return (
-        <div>
-            <div className="flex flex-col h-screen">
-                <div className="h-15 border-b-2 pl-10 flex flex-row ">
+        <div className="flex flex-col h-screen max-h-screen overflow-hidden bg-background">
+            <header className="fixed top-0 right-0 left-0 lg:relative z-30 h-16 border-b flex flex-row items-center px-4 md:px-8 bg-background/95 backdrop-blur-md transition-all duration-300">
+                <div className="flex-1 min-w-0">
                     <UserIcon name="name" />
-                    <div className="w-40 ml-auto flex flex-row gap-3 my-auto">
-                        <VideoIcon />
-                        <PhoneCall />
-                        <MoreVertical />
-                    </div>
                 </div>
-                <div className="flex-1 flex flex-col justify-between  p-5">
-                    <div className="flex-1 overflow-y-auto p-4 space-y-6">
-                        <ChatText />
-                    </div>
+                <div className="flex flex-row gap-4 items-center shrink-0">
+                    <VideoIcon className="size-5 md:size-6 cursor-pointer text-muted-foreground hover:text-primary transition-colors" />
+                    <PhoneCall className="size-5 md:size-6 cursor-pointer text-muted-foreground hover:text-primary transition-colors" />
+                    <MoreVertical className="size-5 md:size-6 cursor-pointer text-muted-foreground hover:text-primary transition-colors" />
+                </div>
+            </header>
 
-                    <div className="w-full flex justify-center pb-4">
-                        <div className="w-full max-w-2xl">
-                            <ChatButton />
-                        </div>
-                    </div>
+            <main className="flex-1 overflow-y-auto pt-16 pb-24 px-4 md:px-6 lg:px-8 noScrollBar scroll-smooth">
+                <div className="max-w-4xl mx-auto w-full pt-4">
+                    <ChatText />
                 </div>
-            </div>
+            </main>
+
+            <footer className="fixed bottom-15 right-0 left-0 md:left-auto lg:relative lg:bottom-5  z-30 p-4 bg-background/95 backdrop-blur-md border-t lg:border-t-0 transition-all duration-300">
+                <div className="max-w-3xl xl:max-w-4xl mx-auto w-full">
+                    <ChatButton />
+                </div>
+            </footer>
         </div>
     );
 }

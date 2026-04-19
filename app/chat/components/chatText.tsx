@@ -1,6 +1,6 @@
 export default function ChatText() {
     return (
-        <div>
+        <div className=" overflow-y-scroll noScrollBar">
             <div className="flex items-start gap-3 max-w-[80%]">
                 <div className="w-8 h-8 rounded-full bg-blue-500 flex-none" />
                 <div className="flex flex-col">

@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { authClient } from "@/app/lib/auth_client";
 import { useRouter } from "next/navigation";
 import { Spinner } from "./ui/spinner";
 import { AlertDescription } from "./ui/alert";
@@ -34,11 +33,6 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
     const googleSignup = async () => {
         try {
             setLoading(true);
-
-            await authClient.signIn.social({
-                provider: "google",
-                callbackURL: "/chat",
-            });
         } catch (err: any) {
             setError(err.message || "Erreur Google");
         } finally {
@@ -61,12 +55,6 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
 
         try {
             setLoading(true);
-
-            await authClient.signUp.email({
-                name: formData.name,
-                email: formData.email,
-                password: formData.password,
-            });
 
             setFormdata({
                 name: "",

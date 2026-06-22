@@ -6,7 +6,6 @@ import { InputGroup, InputGroupAddon } from "@/components/ui/input-group";
 import { Textarea } from "@/components/ui/textarea";
 import { Send } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { authClient } from "@/app/lib/auth_client";
 import { sendMessageAction } from "../actions/messageAction";
 
 export function ChatButton() {
@@ -14,14 +13,13 @@ export function ChatButton() {
     const [isLoading, setIsLoading] = useState(false);
     const searchParams = useSearchParams();
     const receiverId = searchParams.get("id");
-    const { data: session } = authClient.useSession();
 
     const handleSend = async () => {
-        if (!content.trim() || !receiverId || !session?.user?.id || isLoading) return;
+        if (!content.trim() || !receiverId || isLoading) return;
 
         setIsLoading(true);
         try {
-            const result = await sendMessageAction(session.user.id, receiverId, content);
+            const result = await sendMessageAction("", receiverId, content);
             if (result.success) {
                 setContent("");
             } else {

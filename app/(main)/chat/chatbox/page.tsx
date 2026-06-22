@@ -1,5 +1,4 @@
 import { MoreVertical, PhoneCall, VideoIcon } from "lucide-react";
-import prisma from "@/app/lib/prisma";
 import BackButton from "@/components/ui/backButton";
 import UserIcon from "@/app/(main)/chat/components/userIcon";
 import ChatText from "@/app/(main)/chat/components/chatText";
@@ -8,14 +7,8 @@ import { Suspense } from "react";
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ id?: string }> }) {
     const { id } = await searchParams;
-    
+
     let receiver = null;
-    if (id) {
-        receiver = await prisma.user.findUnique({
-            where: { id },
-            select: { name: true, image: true }
-        });
-    }
 
     return (
         <div className="flex flex-col h-screen max-h-screen overflow-hidden bg-background w-full">

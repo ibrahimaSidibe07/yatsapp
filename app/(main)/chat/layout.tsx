@@ -1,50 +1,10 @@
 import { Suspense } from "react";
-import prisma from "@/app/lib/prisma";
 import ListUsers from "./listUsers";
 import { Skeleton } from "@/components/ui/skeleton";
 import MainPage from "./mainPage";
-import { auth } from "@/app/lib/auth";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 
 async function UsersListContent() {
-    const session = await auth.api.getSession({
-        headers: await headers(),
-    });
-
-    if (!session) {
-        redirect("/login");
-    }
-
-    const friendships = await prisma.friend.findMany({
-        where: {
-            OR: [
-                { user1Id: session.user.id },
-                { user2Id: session.user.id },
-            ],
-        },
-        include: {
-            user1: {
-                select: {
-                    id: true,
-                    name: true,
-                    image: true,
-                    email: true,
-                }
-            },
-            user2: {
-                select: {
-                    id: true,
-                    name: true,
-                    image: true,
-                    email: true,
-                }
-            }
-        }
-    });
-
-    const users = friendships.map(f => f.user1Id === session.user.id ? f.user2 : f.user1);
-    
+    const users = [];
     return <ListUsers user={users} />;
 }
 

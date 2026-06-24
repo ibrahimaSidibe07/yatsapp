@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { Spinner } from "./ui/spinner";
 import { AlertDescription } from "./ui/alert";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 
 interface FormType {
   email: string;
@@ -41,22 +42,28 @@ export function LoginForm({
     password: "",
   });
 
-  const googleLogin = async () => {
-    try {
-      setLoading(true);
-    } catch (err: any) {
-      setError(err.message || "Erreur Google");
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const googleLogin = async () => {
+  //   try {
+  //     setLoading(true);
+  //   } catch (err: any) {
+  //     setError(err.message || "Erreur Google");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const handleSignin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       setLoading(true);
-
+      const { data, error } = await authClient.signIn.email({
+        email: formData.email,
+        password: formData.password,
+        rememberMe: true,
+        callbackURL: "/chat",
+      });
+      if (error) return setError(error.message as string);
       setFormdata({ email: "", password: "" });
 
       setTimeout(() => {
@@ -94,7 +101,7 @@ export function LoginForm({
                 <Button
                   variant="outline"
                   type="button"
-                  onClick={googleLogin}
+                  // onClick={googleLogin}
                   disabled={loading}
                   className="w-full"
                 >

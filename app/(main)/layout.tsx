@@ -1,9 +1,10 @@
 import SideBar from "@/app/sidbar";
+import { ConvexClientProvider } from "./ConvexClientProvider";
 
 export default function MainLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    return <SideBar>{children}</SideBar>;
+  return <SideBar>{children}</SideBar>;
 }

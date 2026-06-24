@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SideBar from "./sidbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ConvexClientProvider } from "@/app/convexClientProvider.tsx";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -27,10 +28,13 @@ export default async function RootLayout({
     return (
         <html lang="en" className="scroll-smooth">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}>
-                <TooltipProvider>
-                    {children}
-                </TooltipProvider>
+                <ConvexClientProvider>
+                    <TooltipProvider>
+                        {children}
+                    </TooltipProvider>
+                </ConvexClientProvider>
             </body>
         </html>
     );
 }
+

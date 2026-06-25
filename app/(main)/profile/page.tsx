@@ -16,8 +16,13 @@ import { useRouter } from "next/navigation";
 import Option from "./components/option";
 import { useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
+import { UserInterface } from "@/app/type";
 
-export default function Profile() {
+export default function Profile({
+  currentUser,
+}: {
+  currentUser: UserInterface;
+}) {
   const [loading, SetLoding] = useState<boolean>(false);
   const router = useRouter();
 
@@ -38,7 +43,7 @@ export default function Profile() {
           </Avatar>
 
           <div>
-            <h2 className="text-xl font-semibold">{userName}</h2>
+            <h2 className="text-xl font-semibold"></h2>
             <p className="text-sm text-muted-foreground">
               Toujours coder, jamais abandonner 🚀{" "}
             </p>
@@ -80,7 +85,7 @@ export default function Profile() {
             title="Paramètres"
             description="Préférences du compte"
           />
-          <Button variant={"destructive"} onClick={logOut}>
+          <Button variant={"destructive"}>
             {loading ? (
               <Spinner />
             ) : (

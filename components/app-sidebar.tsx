@@ -6,31 +6,21 @@ import {
   SidebarHeader,
 } from "@/components/ui/sidebar";
 import { FaY } from "react-icons/fa6";
-import { MdChat, MdOutlineVideoCameraBack } from "react-icons/md";
-import { RiGroupLine } from "react-icons/ri";
-import { PhoneCall, User2Icon, UsersIcon } from "lucide-react";
+import { MdChat } from "react-icons/md";
+import { User2Icon, UsersIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { profileNameAb } from "@/functions/string_function";
-import { useUser } from "@/app/store/user.store";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
 import { AvatarWithBadge } from "@/app/(main)/chat/components/avatarWithBadge";
+import { UserInterface } from "@/app/type";
 
-interface userType {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  email: string;
-  emailVerified: boolean;
-  name: string;
-  image?: string | null | undefined;
-}
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  user?: userType | undefined | null;
+  user: UserInterface | undefined | null;
 }
 
 export function AppSidebar({ user, ...props }: AppSidebarProps) {
+  console.log(user);
   return (
     <Sidebar collapsible="icon" className="border-r bg-sidebar/50" {...props}>
       <SidebarHeader className="flex items-center justify-center h-16 border-b shrink-0">
